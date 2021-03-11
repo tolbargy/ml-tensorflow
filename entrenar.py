@@ -123,7 +123,7 @@ cnn.fit_generator(
 )
 
 dir_modelo='./modelo/'
-if not os.path.exists(dir):
-    os.mkdir(dir)
+if not os.path.exists(dir_modelo):
+    os.mkdir(dir_modelo)
 cnn.save('./modelo/modelo.h5')
 cnn.save_weights('./modelo/pesos.h5')
