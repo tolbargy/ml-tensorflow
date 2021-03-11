@@ -2,7 +2,7 @@ import sys
 import os
 
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.python.keras import optimizers
+from tensorflow.keras.optimizers import Adam
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dropout, Flatten, Dense, Activation
 from tensorflow.python.keras.layers import Convolution2D, MaxPooling2D
@@ -76,7 +76,7 @@ cnn.add(Convolution2D(
     filtros_conv1,
     tamano_filtro1,
     padding='same', # Que es lo que va hacer nuestros filtros en las esquinas
-    input_shape=(altura,longitud), # Las imagenes que vamos entregar a nuestras capas van a tener ciertos tamaños
+    input_shape=(altura,longitud,3), # Las imagenes que vamos entregar a nuestras capas van a tener ciertos tamaños
     activation='relu' #La funcion de activacion
 ))
 
@@ -109,17 +109,16 @@ cnn.add(Dense(clases,activation='softmax'))
 
 cnn.compile(
     loss='categorical_crossentropy', # Decirle a nuestra red neuronal su funcion de perdida, saber que va bien y que va mal
-    optimizer=optimizers.Adam(lr=lr), # El porcentaje de optimizador
+    optimizer=Adam(lr=lr), # El porcentaje de optimizador
     metrics=['accuracy'] # La metrica con la cual esta optimizando tratar de mejorar su precision de la clasificacion de imagenes
 )
 
-
 # --- Entrenando nuestro algoritmo
-cnn.fit(
+cnn.fit_generator(
     imagen_entrenamiento,
     steps_per_epoch=pasos,
     epochs=epocas,
-    imagen_validacion,
+    validation_data=imagen_validacion,
     validation_steps=pasos_validacion
 )
 
